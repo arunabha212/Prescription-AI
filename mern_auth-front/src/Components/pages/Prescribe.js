@@ -43,7 +43,7 @@ export default function Prescribe() {
     const [buttonText, setButtonText] = useState("START");
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState('Prescription not uploaded!');
-
+    const [result1, setResult1] = useState('Prescription not uploaded!');
     const [isBackgroundBlue, setIsBackgroundBlue] = useState(false);
     const [isBorder, setIsBorder] = useState(false);
     const borderstyle = { borderStyle: "ridge", padding: "2rem" };
@@ -308,7 +308,7 @@ export default function Prescribe() {
                 <div className="col-sm-8">
                     <input type="button" className="Click" id="ehrFile" value="Click"
                         onClick={async e => {
-                            const result = await fetch('http://127.0.0.1:8000/OCR', {
+                            const result1 = await fetch('http://127.0.0.1:8000/OCR', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -318,7 +318,7 @@ export default function Prescribe() {
                             // console.log(result)
                             
                         
-                            setResult(result);
+                            setResult1(result1);
                             // const reader = new FileReader();
                             // reader.onload = function () {
                             //     var text1 = reader.result;
@@ -329,7 +329,7 @@ export default function Prescribe() {
                             // reader.readAsText(e.target.files[0]);
                         }} />
                 </div>
-                <div>{result}</div>
+                <div>{result1}</div>
             </div>
         );
 

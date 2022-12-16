@@ -56,7 +56,7 @@ html: "<p>Hello <b><span style='color: #0080ff'>"+name+"</span></b>,</p><br/><p>
     };
     sender.sendMail(mail, function(error, info) {
       if (error) {
-        // console.log(error);
+        console.log("Sender details Error");
          return res.status(500).json({msg:error.message});
       } else {
         // console.log("Email sent successfully: "+ info.response);

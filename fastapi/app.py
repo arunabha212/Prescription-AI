@@ -53,7 +53,7 @@ def drug_predict(text:dta):
 def img_to_speech():
     pytesseract.pytesseract.tesseract_cmd = "E:\TesseractOCR\Tesseract.exe"
 
-    video = cv2.VideoCapture("https://192.168.1.2:8080/video")
+    video = cv2.VideoCapture("https://192.168.137.217:8080/video")
 
     video.set(3, 640)
     video.set(4, 480)
