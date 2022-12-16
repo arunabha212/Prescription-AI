@@ -48,7 +48,7 @@ for _, item in df.iterrows():
 
 
 
-n_iter = 10
+n_iter = 1
 def train_ner(training_data):
     
     TRAIN_DATA = training_data
@@ -95,7 +95,7 @@ nlp2 = train_ner(TRAIN_DATA)
 
 def extract_drug_entity(text):
     docx =  nlp2(text)
-    print(docx.ents)
+    print('aa',docx.ents)
     result=[]
     # result = [ent.label_ for ent in docx.ents]
     for ent in docx.ents:

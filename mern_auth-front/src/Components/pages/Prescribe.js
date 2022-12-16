@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext  } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 
 import SignaturePad from "react-signature-canvas";
@@ -21,19 +21,19 @@ window['jQuery'] = window['$'] = $;
 
 export default function Prescribe() {
 
-	var curr = new Date();
-	curr.setDate(curr.getDate());
-	var date = curr.toISOString().substr(0,10);
-    
+    var curr = new Date();
+    curr.setDate(curr.getDate());
+    var date = curr.toISOString().substr(0, 10);
+
     const divRef = useRef();//scroll
-    const [email,setEmail]=useState();
-    const [name,setName]=useState();
-    const [pateintID,setPateintID]=useState();
+    const [email, setEmail] = useState();
+    const [name, setName] = useState();
+    const [pateintID, setPateintID] = useState();
     const [show, setShow] = useState(false);//show prescription view
     const [currentRow, setCurrentRow] = useState(0);//
     const handleClose = () => setShow(false);
     const sigCanvas = useRef({});
-    const handleClear= () =>{
+    const handleClear = () => {
         sigCanvas.current.clear();
     }
     AOS.init({ offset: 150, duration: 550 });
@@ -42,7 +42,7 @@ export default function Prescribe() {
 
     const [buttonText, setButtonText] = useState("START");
     const [loading, setLoading] = useState(false);
-    const [result, setResult] = useState('<h3>Please Give Some Input</h3>');
+    const [result, setResult] = useState('Prescription not uploaded!');
 
     const [isBackgroundBlue, setIsBackgroundBlue] = useState(false);
     const [isBorder, setIsBorder] = useState(false);
@@ -55,7 +55,7 @@ export default function Prescribe() {
     const { finalTranscript, resetTranscript } = useSpeechRecognition()
     const [value1, setValue1] = useState();
     function createTable(data) {//
-       
+
         var prescription = document.querySelector("#resultTable");
         for (var i = 0; i < data.length; i++) {
             document.querySelector("#R" + String(i + 1) + " td").innerHTML = "&#8226";
@@ -71,31 +71,31 @@ export default function Prescribe() {
 
         }
     }
-    const sendMail=async(dirpath)=>{
-       
-            
-	
-            /*const pdfsend=await axios.post("http://localhost:5000/sendpdf",patientdetails);
-	    var email_result = pdfsend.data.express;
-	    if(email_result=="Done")
-		Swal('Email','Email Sent Successfully!!!','success');
-	    else
-		Swal('Email','Error Occured while sending email','error');*/
+    const sendMail = async (dirpath) => {
+
+
+
+        /*const pdfsend=await axios.post("http://localhost:5000/sendpdf",patientdetails);
+    var email_result = pdfsend.data.express;
+    if(email_result=="Done")
+    Swal('Email','Email Sent Successfully!!!','success');
+    else
+    Swal('Email','Error Occured while sending email','error');*/
 
         try {
-            const patientdetails={email,dirpath,name}
-            
-            const PdfRes=await axios.post("http://localhost:5000/sendpdf",patientdetails);
-            Swal('Email','Email Sent Successfully!!!','success');
+            const patientdetails = { email, dirpath, name }
 
-    }
-    catch (err) {
-        err.response.data.msg && Swal('Email','Error Occured while sending email','error')
-    }
-}
-    const printDocument = async() => {
+            const PdfRes = await axios.post("http://localhost:5000/sendpdf", patientdetails);
+            Swal('Email', 'Email Sent Successfully!!!', 'success');
 
-	document.getElementById("refreshsig").style.visibility = "hidden";
+        }
+        catch (err) {
+            err.response.data.msg && Swal('Email', 'Error Occured while sending email', 'error')
+        }
+    }
+    const printDocument = async () => {
+
+        document.getElementById("refreshsig").style.visibility = "hidden";
 
         const divToDisplay = document.getElementById('pdfcontainer')
         document.getElementById("add").classList.add('disp')
@@ -119,17 +119,17 @@ export default function Prescribe() {
 
 
             pdf.addImage(divImage, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
-            pdf.save("Prescription"+pateintID+".pdf");
+            pdf.save("Prescription" + pateintID + ".pdf");
         })
         document.getElementById("send").classList.remove('disp')
-        sendMail("C:/Users/hp/Downloads/Prescription"+pateintID+".pdf");
+        sendMail("C:/Users/hp/Downloads/Prescription" + pateintID + ".pdf");
 
-	document.getElementById("refreshsig").style.visibility = "visible";
+        document.getElementById("refreshsig").style.visibility = "visible";
     };
-	
+
     //open preview view of prescription
     const handleShow = async () => {
-       
+
         var obj = {};
         var trans;
         Object.entries({ value1 }).forEach(([key, value]) => {
@@ -235,17 +235,16 @@ export default function Prescribe() {
                 let j = result1[l]
 
                 console.log(j[1])
-                if (j[1] === "DRUG")
-                {
-                        mresult += "<mark class='entity' style='background: #ffa45b;padding: 0.45em 0.6em; border-radius: 0.35em; line-height: 2em;' id='mark-id-ann'>"
-                        mresult += j[0]
-                        mresult += "<span id='spanann' style='font-size: 0.8rem; font-weight: bold; line-height: 1em; border-radius: 0.35em; text-transform: uppercase; vertical-align: middle; color: #012453;'>"
-                        mresult += j[1]
-                        mresult += "</span></mark>"
-                    }// orange
-                        
+                if (j[1] === "DRUG") {
+                    mresult += "<mark class='entity' style='background: #ffa45b;padding: 0.45em 0.6em; border-radius: 0.35em; line-height: 2em;' id='mark-id-ann'>"
+                    mresult += j[0]
+                    mresult += "<span id='spanann' style='font-size: 0.8rem; font-weight: bold; line-height: 1em; border-radius: 0.35em; text-transform: uppercase; vertical-align: middle; color: #012453;'>"
+                    mresult += j[1]
+                    mresult += "</span></mark>"
+                }// orange
 
-                
+
+
             }
 
             mresult += "</div>"
@@ -307,17 +306,30 @@ export default function Prescribe() {
                 <label htmlFor="ehrFile" id="labelall" className="col-sm-3 col-form-label" style={{ color: "#ff7171", fontWeight: "bold" }}>  Upload Text Format Prescription</label>
 
                 <div className="col-sm-8">
-                    <input type="file" className="upload" id="ehrFile" accept=".txt,application/text"
-                        onChange={async e => {
-                            const reader = new FileReader();
-                            reader.onload = function () {
-                                var text1 = reader.result;
-                                console.log(text1);
-                                setText(String(text1));
-                            };
-                            reader.readAsText(e.target.files[0]);
+                    <input type="button" className="Click" id="ehrFile" value="Click"
+                        onClick={async e => {
+                            const result = await fetch('http://127.0.0.1:8000/OCR', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+    
+                            }).then((res) => res.json())
+                            // console.log(result)
+                            
+                        
+                            setResult(result);
+                            // const reader = new FileReader();
+                            // reader.onload = function () {
+                            //     var text1 = reader.result;
+                            //     console.log(text1);
+                            //     setText(String(text1));
+                            // };
+                            // // alert(e.target.files[0])
+                            // reader.readAsText(e.target.files[0]);
                         }} />
                 </div>
+                <div>{result}</div>
             </div>
         );
 
@@ -336,35 +348,35 @@ export default function Prescribe() {
                         </div>
                     </section>
                     <div class="preview container">
-			<br/>
-			<button type="button" class="btn btn-success" id="previewbtn" onClick={handleShow}> Show Preview</button>
+                        <br />
+                        <button type="button" class="btn btn-success" id="previewbtn" onClick={handleShow}> Show Preview</button>
                     </div>
-	
 
-                    <Overlay  className="overlay overlay-body" id="overlay-body "  style={{backgroundColor: "white"}}  open={show} onClose={handleClose}>
+
+                    <Overlay className="overlay overlay-body" id="overlay-body " style={{ backgroundColor: "white" }} open={show} onClose={handleClose}>
 
                         <div className=" container" id="pdfcontainer">
                             <div className="title">
-                            <h6>{"</prescription.ai >"}</h6>
+                                <h6>{"</prescription.ai >"}</h6>
                             </div>
 
                             <form class="form-inline patientdetails">
-				<label for="inlineFormEmail" class="m-2">Doctor Name:</label>
-                                <input type="text" class="form-control m-2" id="inlineFormPassword" value={userData.user.displayname && "loading"} style={{color: "red"}} />
-				<label for="inlineFormPassword" class="m-2">patient Name:</label>
+                                <label for="inlineFormEmail" class="m-2">Doctor Name:</label>
+                                <input type="text" class="form-control m-2" id="inlineFormPassword" value={userData.user.displayname && "loading"} style={{ color: "red" }} />
+                                <label for="inlineFormPassword" class="m-2">patient Name:</label>
                                 <input type="text" class="form-control m-2" id="inlineFormPassword" placeholder="patient Name" onChange={(e) => setName(e.target.value)} />
                                 <label for="inlineFormEmail" class="m-2">Patient Email:</label>
-                                <input type="email" class="form-control m-2" id="inlineFormEmail" placeholder="Email address" onChange={(e) => setEmail(e.target.value)}/>
+                                <input type="email" class="form-control m-2" id="inlineFormEmail" placeholder="Email address" onChange={(e) => setEmail(e.target.value)} />
                             </form>
-				
+
                             <form class="form-inline patientdetails">
                                 <label for="inlineFormEmail" class="m-2">Date:</label>
-				<input id="dateRequired" type="date" name="dateRequired" defaultValue={date} style={{marginRight:"135px"}}/> 
+                                <input id="dateRequired" type="date" name="dateRequired" defaultValue={date} style={{ marginRight: "135px" }} />
                                 <label for="inlineFormEmail" class="m-2">patient ID:</label>
                                 <input type="text" class="form-control m-2" id="inlineFormEmail" placeholder="#ID" onChange={(e) => setPateintID(e.target.value)} />
-				<br/>
+                                <br />
                             </form>
-			    <h4 id="h3divider">~~~</h4>
+                            <h4 id="h3divider">~~~</h4>
                             <div class="tableMainDiv">
                                 <table align="center" id="resultTable">
                                     <tr>
@@ -493,35 +505,35 @@ export default function Prescribe() {
 
 
                                 <div className="doctor-singnature">
-                                    <h6>{"Dr. "+userData.user.displayname}</h6>
-				    <div class='inputWithButton'>
-		                            <SignaturePad
-		                                clearButton="true"
-		                                ref={sigCanvas}
-		                                canvasProps={{
-		                                    className: "signatureCanvas"
-		                                }}
-		                            />
-					    <i class="fas fa-redo-alt" id="refreshsig" onClick={handleClear} style={{ color: "#6598d9", paddingRight: "2px", paddingTop: "2px"}}></i>
-				    </div>
+                                    <h6>{"Dr. " + userData.user.displayname}</h6>
+                                    <div class='inputWithButton'>
+                                        <SignaturePad
+                                            clearButton="true"
+                                            ref={sigCanvas}
+                                            canvasProps={{
+                                                className: "signatureCanvas"
+                                            }}
+                                        />
+                                        <i class="fas fa-redo-alt" id="refreshsig" onClick={handleClear} style={{ color: "#6598d9", paddingRight: "2px", paddingTop: "2px" }}></i>
+                                    </div>
                                 </div>
                             </div>
-			    <br/>
-			    <br/>
+                            <br />
+                            <br />
                             <footer class="overlayfooter">
-				    <div class="hello">
-					<button type="button" class="btn" style={{marginLeft: "20%", float: "left", color: "white"}}><i class="fas fa-phone-alt"/>    020-222-4343</button>
-                                	<button type="button" class="btn" style={{marginRight: "20%",float: "right", color: "white"}}><i class="fas fa-envelope"/>   contact@gmail.com</button>
-    				   </div>
+                                <div class="hello">
+                                    <button type="button" class="btn" style={{ marginLeft: "20%", float: "left", color: "white" }}><i class="fas fa-phone-alt" />    020-222-4343</button>
+                                    <button type="button" class="btn" style={{ marginRight: "20%", float: "right", color: "white" }}><i class="fas fa-envelope" />   contact@gmail.com</button>
+                                </div>
 
-				<div class="two">
-                                <button type="button" class="btn btn-primary" id="send" onClick={printDocument} >
-                                    Generate & send 
-                                 </button>
-                                <button type="button" class="btn btn-primary" onClick={handleClose}>
-                                    Close
-                              </button>
-			      </div>
+                                <div class="two">
+                                    <button type="button" class="btn btn-primary" id="send" onClick={printDocument} >
+                                        Generate & send
+                                    </button>
+                                    <button type="button" class="btn btn-primary" onClick={handleClose}>
+                                        Close
+                                    </button>
+                                </div>
                             </footer>
 
                         </div>
@@ -542,30 +554,30 @@ export default function Prescribe() {
     }
 
     return (
-        <> 
+        <>
             {
                 userData.user ? (<div className="prescribe"> <section >
-                <div className="container">
-                    <form>
-                        {SelectFileFunc()}
-                        <div className="form-group row" data-aos="zoom" style={{ fontWeight: "bold" }}>
-                            <label className="col-sm-2 col-form-label">OR</label>
-                        </div>
-                        {RecordVoiceFunc()}
-                        <br />
-                        <div className="form-group" ref={divRef}>
-                            {!loading && (<button className="btn btn-outline-danger mr-2" id="processbtn" onClick={message}>
-                                Process</button>)}
-                            {loading && (<button className="btn btn-outline-danger mr-2" id="processbtn" disabled><FaSpinner
-                                icon="spinner" className="spinner" /> Loading...</button>)}
+                    <div className="container">
+                        <form>
+                            {SelectFileFunc()}
+                            <div className="form-group row" data-aos="zoom" style={{ fontWeight: "bold" }}>
+                                <label className="col-sm-2 col-form-label">OR</label>
+                            </div>
+                            {RecordVoiceFunc()}
+                            <br />
+                            <div className="form-group" ref={divRef}>
+                                {!loading && (<button className="btn btn-outline-danger mr-2" id="processbtn" onClick={message}>
+                                    Process</button>)}
+                                {loading && (<button className="btn btn-outline-danger mr-2" id="processbtn" disabled><FaSpinner
+                                    icon="spinner" className="spinner" /> Loading...</button>)}
 
-                        </div>
-                    </form>
-                </div>
-            </section>
-            {Annotationsection()}</div>):<div className="prescribe"> Loading ... </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+                    {Annotationsection()}</div>) : <div className="prescribe"> Loading ... </div>
             }
-           
+
         </>
     );
 }
